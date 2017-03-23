@@ -13,6 +13,7 @@ import com.mifmif.common.regex.Generex;
 import com.rtrk.atcommand.ATCommand;
 import com.rtrk.atcommand.Parameter;
 import com.rtrk.atcommand.adapter.ProtobufATCommandAdapter;
+import com.rtrk.atcommand.generator.parser.GeneratorParser;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Action;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.CommandType;
@@ -171,6 +172,14 @@ public class ATCommandGenerator {
 			commandTypeBuilderClass.getMethod("setAction", Action.class).invoke(commandTypeBuilder,
 					Action.valueOf(atCommand.getClazz()));
 
+			// set parameters with parser
+			/*
+			 * if (atCommand.hasParser()) { Class<?> parserClass =
+			 * Class.forName(atCommand.getParser()); GeneratorParser parser =
+			 * (GeneratorParser) parserClass.newInstance();
+			 * parser.generateProtobufATCommand(commandTypeBuilder); }
+			 */
+
 			// set parameters
 			Vector<Parameter> parameters = atCommand.getParameters();
 			for (int i = 0; i < parameters.size(); i++) {
@@ -229,10 +238,12 @@ public class ATCommandGenerator {
 				else if (parameterClass.equals(String.class)) {
 					if (parameter.hasPattern()) {
 						Generex generex = new Generex(parameter.getPattern().replace("\"", "\\\""));
-						commandTypeBuilderClass.getMethod("set"+parameterName, parameterClass).invoke(commandTypeBuilder, generex.random());
+						commandTypeBuilderClass.getMethod("set" + parameterName, parameterClass)
+								.invoke(commandTypeBuilder, generex.random());
 					} else {
-						String randomString= RandomStringUtils.randomAlphabetic(new Random().nextInt(10) + 10);
-						commandTypeBuilderClass.getMethod("set"+parameterName, parameterClass).invoke(commandTypeBuilder, randomString);
+						String randomString = RandomStringUtils.randomAlphabetic(new Random().nextInt(10) + 10);
+						commandTypeBuilderClass.getMethod("set" + parameterName, parameterClass)
+								.invoke(commandTypeBuilder, randomString);
 					}
 				}
 
@@ -241,7 +252,8 @@ public class ATCommandGenerator {
 					Random random = new Random();
 					Object[] values = (Object[]) parameterClass.getMethod("values").invoke(parameterClass);
 					int randomIndex = random.nextInt(values.length);
-					commandTypeBuilderClass.getMethod("set"+parameterName, parameterClass).invoke(commandTypeBuilder, values[randomIndex]);
+					commandTypeBuilderClass.getMethod("set" + parameterName, parameterClass).invoke(commandTypeBuilder,
+							values[randomIndex]);
 				}
 			}
 
