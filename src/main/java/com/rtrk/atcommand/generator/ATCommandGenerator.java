@@ -13,7 +13,6 @@ import com.mifmif.common.regex.Generex;
 import com.rtrk.atcommand.ATCommand;
 import com.rtrk.atcommand.Parameter;
 import com.rtrk.atcommand.adapter.ProtobufATCommandAdapter;
-import com.rtrk.atcommand.generator.parser.GeneratorParser;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Action;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.CommandType;
@@ -23,7 +22,30 @@ public class ATCommandGenerator {
 	public static byte[] generateATCommand() {
 		ATCommand atCommand = getRandomATCommand();
 		return createATCommand(atCommand);
+	}
 
+	public static byte[] generateATCommand(String commandName) {
+		Map<String, Map<String, ATCommand>> typeMap = ProtobufATCommandAdapter.encodeMap.get(commandName);
+
+		// get random action map
+		int actionIndex = new Random().nextInt(typeMap.size());
+		Map<String, ATCommand> actionMap = new ArrayList<Map<String, ATCommand>>(typeMap.values()).get(actionIndex);
+
+		// get random ATCommand
+		int commandIndex = new Random().nextInt(actionMap.size());
+		ATCommand atCommand = new ArrayList<ATCommand>(actionMap.values()).get(commandIndex);
+
+		return createATCommand(atCommand);
+	}
+
+	public static byte[] generateATCommand(String commandName, String commandType) {
+		Map<String, ATCommand> actionMap = ProtobufATCommandAdapter.encodeMap.get(commandName).get(commandType);
+
+		// get random ATCommand
+		int commandIndex = new Random().nextInt(actionMap.size());
+		ATCommand atCommand = new ArrayList<ATCommand>(actionMap.values()).get(commandIndex);
+
+		return createATCommand(atCommand);
 	}
 
 	public static byte[] generateATCommand(String commandName, String commandType, String commandAction) {
@@ -33,6 +55,30 @@ public class ATCommandGenerator {
 
 	public static byte[] generateProtobufATCommand() {
 		ATCommand atCommand = getRandomATCommand();
+		return createProtobufATCommand(atCommand);
+	}
+
+	public static byte[] generateProtobufATCommand(String commandName) {
+		Map<String, Map<String, ATCommand>> typeMap = ProtobufATCommandAdapter.encodeMap.get(commandName);
+
+		// get random action map
+		int actionIndex = new Random().nextInt(typeMap.size());
+		Map<String, ATCommand> actionMap = new ArrayList<Map<String, ATCommand>>(typeMap.values()).get(actionIndex);
+
+		// get random ATCommand
+		int commandIndex = new Random().nextInt(actionMap.size());
+		ATCommand atCommand = new ArrayList<ATCommand>(actionMap.values()).get(commandIndex);
+
+		return createProtobufATCommand(atCommand);
+	}
+
+	public static byte[] generateProtobufATCommand(String commandName, String commandType) {
+		Map<String, ATCommand> actionMap = ProtobufATCommandAdapter.encodeMap.get(commandName).get(commandType);
+
+		// get random ATCommand
+		int commandIndex = new Random().nextInt(actionMap.size());
+		ATCommand atCommand = new ArrayList<ATCommand>(actionMap.values()).get(commandIndex);
+
 		return createProtobufATCommand(atCommand);
 	}
 
@@ -58,6 +104,13 @@ public class ATCommandGenerator {
 
 			// set prefix
 			command += atCommand.getPrefix();
+
+			// set parameters with generator
+			if (atCommand.hasGenerator()) {
+				Class<?> generatorClass = Class.forName(atCommand.getGenerator());
+				Generator generator = (Generator) generatorClass.newInstance();
+				return generator.generateATCommand();
+			}
 
 			// set parameters
 			Vector<Parameter> parameters = atCommand.getParameters();
@@ -107,7 +160,13 @@ public class ATCommandGenerator {
 						}
 
 						// random value beetween min and max
-						Double value = Math.random() * (max - min) + min;
+						Double value;
+						if (parameterClass.equals(double.class) || parameterClass.equals(float.class)) {
+							value = Math.random() * (max - min) + min;
+						} else {
+							value = Math.random() * (max - min + 1) + min;
+						}
+
 						Class<?> valueClass = value.getClass();
 						Object valueObject = valueClass.getMethod(parameterClass.getName() + "Value").invoke(value);
 						command += valueObject.toString();
@@ -121,7 +180,7 @@ public class ATCommandGenerator {
 						Generex generex = new Generex(parameter.getPattern().replace("\"", "\\\""));
 						command += generex.random();
 					} else {
-						command += RandomStringUtils.randomAlphabetic(new Random().nextInt(10) + 10);
+						command += RandomStringUtils.randomAlphabetic(new Random().nextInt(10) + 5);
 					}
 				}
 
@@ -136,7 +195,8 @@ public class ATCommandGenerator {
 
 			}
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | NoSuchFieldException e) {
+				| InvocationTargetException | NoSuchFieldException | ClassNotFoundException
+				| InstantiationException e) {
 			e.printStackTrace();
 		}
 
@@ -172,13 +232,12 @@ public class ATCommandGenerator {
 			commandTypeBuilderClass.getMethod("setAction", Action.class).invoke(commandTypeBuilder,
 					Action.valueOf(atCommand.getClazz()));
 
-			// set parameters with parser
-			/*
-			 * if (atCommand.hasParser()) { Class<?> parserClass =
-			 * Class.forName(atCommand.getParser()); GeneratorParser parser =
-			 * (GeneratorParser) parserClass.newInstance();
-			 * parser.generateProtobufATCommand(commandTypeBuilder); }
-			 */
+			// set parameters with generator
+			if (atCommand.hasGenerator()) {
+				Class<?> generatorClass = Class.forName(atCommand.getGenerator());
+				Generator generator = (Generator) generatorClass.newInstance();
+				generator.generateProtobufATCommand(commandTypeBuilder);
+			}
 
 			// set parameters
 			Vector<Parameter> parameters = atCommand.getParameters();
@@ -241,7 +300,7 @@ public class ATCommandGenerator {
 						commandTypeBuilderClass.getMethod("set" + parameterName, parameterClass)
 								.invoke(commandTypeBuilder, generex.random());
 					} else {
-						String randomString = RandomStringUtils.randomAlphabetic(new Random().nextInt(10) + 10);
+						String randomString = RandomStringUtils.randomAlphabetic(new Random().nextInt(10) + 5);
 						commandTypeBuilderClass.getMethod("set" + parameterName, parameterClass)
 								.invoke(commandTypeBuilder, randomString);
 					}
@@ -265,7 +324,7 @@ public class ATCommandGenerator {
 			commandBuilderClass.getMethod("set" + commandTypeUpperCamel, commandTypeClass).invoke(commandBuilder,
 					commandType);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-				| SecurityException | NoSuchFieldException e) {
+				| SecurityException | NoSuchFieldException | ClassNotFoundException | InstantiationException e) {
 			e.printStackTrace();
 		}
 		return commandBuilder.build().toByteArray();
