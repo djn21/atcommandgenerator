@@ -11,15 +11,15 @@ public class App {
 	public static void main(String[] args) {
 		try {
 			while (true) {
-				byte[] command = ATCommandGenerator.generateATCommand("callRelatedCommand", "MOBILE_ORIGINATED_CALL_TO_DIAL_A_NUMBER", "EXECUTION");
+				byte[] command = ATCommandGenerator.generateATCommand("tcpipCommand", "SEND_DATA_THROUGH_TCP_OR_UDP_CONNECTION", "WRITE");
 				System.out.println(new String(command));
 				
-				byte[] decoded=ProtobufATCommandAdapter.decode(command);
+				/*byte[] decoded=ProtobufATCommandAdapter.decode(command);
 				byte[] encoded=ProtobufATCommandAdapter.encode(decoded);	
 				System.out.println(new String(encoded));
-				System.out.println();
+				System.out.println();*/
 				
-				byte[] command1 = ATCommandGenerator.generateProtobufATCommand("callRelatedCommand", "MOBILE_ORIGINATED_CALL_TO_DIAL_A_NUMBER", "EXECUTION");
+				byte[] command1 = ATCommandGenerator.generateProtobufATCommand("tcpipCommand", "SEND_DATA_THROUGH_TCP_OR_UDP_CONNECTION", "WRITE");
 				byte[] encoded1 = ProtobufATCommandAdapter.encode(command1);
 				System.out.println(new String(encoded1));
 				System.out.println();
