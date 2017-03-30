@@ -37,7 +37,6 @@ public class SetParametersFTPGenerator implements Generator {
 		TypeOfConfigurableParameters[] tocp=TypeOfConfigurableParameters.values();
 		int randomIndex = new Random().nextInt(tocp.length);
 		int type=tocp[randomIndex].getNumber();
-		System.out.println(type);
 		ftpCommandBuilder.setType(TypeOfConfigurableParameters.valueOf(type));
 		if (type == 1) {
 			int dataConnectionMode = new Random().nextInt(2);

@@ -24,8 +24,14 @@ public class ATCommandGenerator {
 		return createATCommand(atCommand);
 	}
 
-	public static byte[] generateATCommand(String commandName) {
-		Map<String, Map<String, ATCommand>> typeMap = ProtobufATCommandAdapter.encodeMap.get(commandName);
+	public static byte[] generateATCommand(CommandType commandType) {
+		String commandTypeLowerCamel = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, commandType.toString());
+		Map<String, Map<String, ATCommand>> typeMap = ProtobufATCommandAdapter.encodeMap.get(commandTypeLowerCamel);
+
+		// if command type not exists return null
+		if (typeMap == null) {
+			return null;
+		}
 
 		// get random action map
 		int actionIndex = new Random().nextInt(typeMap.size());
@@ -38,8 +44,32 @@ public class ATCommandGenerator {
 		return createATCommand(atCommand);
 	}
 
-	public static byte[] generateATCommand(String commandName, String commandType) {
-		Map<String, ATCommand> actionMap = ProtobufATCommandAdapter.encodeMap.get(commandName).get(commandType);
+	public static byte[] generateATCommand(Action action) {
+		Random random = new Random();
+
+		// get cmd map
+		Map<String, Map<String, Map<String, ATCommand>>> cmdMap = ProtobufATCommandAdapter.encodeMap;
+
+		// get random type map
+		int cmdIndex = random.nextInt(cmdMap.size());
+		Map<String, Map<String, ATCommand>> typeMap = new ArrayList<Map<String, Map<String, ATCommand>>>(
+				cmdMap.values()).get(cmdIndex);
+
+		// get random action map
+		int actionIndex = random.nextInt(typeMap.size());
+		Map<String, ATCommand> actionMap = new ArrayList<Map<String, ATCommand>>(typeMap.values()).get(actionIndex);
+
+		if (!actionMap.containsKey(action.toString())) {
+			return null;
+		}
+
+		ATCommand atCommand = actionMap.get(action.toString());
+
+		return createProtobufATCommand(atCommand);
+	}
+
+	public static byte[] generateATCommand(CommandType commandType, String messageType) {
+		Map<String, ATCommand> actionMap = ProtobufATCommandAdapter.encodeMap.get(commandType).get(messageType);
 
 		// get random ATCommand
 		int commandIndex = new Random().nextInt(actionMap.size());
@@ -48,8 +78,8 @@ public class ATCommandGenerator {
 		return createATCommand(atCommand);
 	}
 
-	public static byte[] generateATCommand(String commandName, String commandType, String commandAction) {
-		ATCommand atCommand = ProtobufATCommandAdapter.encodeMap.get(commandName).get(commandType).get(commandAction);
+	public static byte[] generateATCommand(CommandType commandType, String messageType, Action action) {
+		ATCommand atCommand = ProtobufATCommandAdapter.encodeMap.get(commandType).get(messageType).get(action);
 		return createATCommand(atCommand);
 	}
 
@@ -58,8 +88,14 @@ public class ATCommandGenerator {
 		return createProtobufATCommand(atCommand);
 	}
 
-	public static byte[] generateProtobufATCommand(String commandName) {
-		Map<String, Map<String, ATCommand>> typeMap = ProtobufATCommandAdapter.encodeMap.get(commandName);
+	public static byte[] generateProtobufATCommand(CommandType commandType) {
+		String commandTypeLowerCamel = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, commandType.toString());
+		Map<String, Map<String, ATCommand>> typeMap = ProtobufATCommandAdapter.encodeMap.get(commandTypeLowerCamel);
+
+		// if command type not exists return null
+		if (typeMap == null) {
+			return null;
+		}
 
 		// get random action map
 		int actionIndex = new Random().nextInt(typeMap.size());
@@ -72,8 +108,32 @@ public class ATCommandGenerator {
 		return createProtobufATCommand(atCommand);
 	}
 
-	public static byte[] generateProtobufATCommand(String commandName, String commandType) {
-		Map<String, ATCommand> actionMap = ProtobufATCommandAdapter.encodeMap.get(commandName).get(commandType);
+	public static byte[] generateProtobufATCommand(Action action) {
+		Random random = new Random();
+
+		// get cmd map
+		Map<String, Map<String, Map<String, ATCommand>>> cmdMap = ProtobufATCommandAdapter.encodeMap;
+
+		// get random type map
+		int cmdIndex = random.nextInt(cmdMap.size());
+		Map<String, Map<String, ATCommand>> typeMap = new ArrayList<Map<String, Map<String, ATCommand>>>(
+				cmdMap.values()).get(cmdIndex);
+
+		// get random action map
+		int actionIndex = random.nextInt(typeMap.size());
+		Map<String, ATCommand> actionMap = new ArrayList<Map<String, ATCommand>>(typeMap.values()).get(actionIndex);
+
+		if (!actionMap.containsKey(action.toString())) {
+			return null;
+		}
+
+		ATCommand atCommand = actionMap.get(action.toString());
+
+		return createProtobufATCommand(atCommand);
+	}
+
+	public static byte[] generateProtobufATCommand(CommandType commandType, String messageType) {
+		Map<String, ATCommand> actionMap = ProtobufATCommandAdapter.encodeMap.get(commandType).get(messageType);
 
 		// get random ATCommand
 		int commandIndex = new Random().nextInt(actionMap.size());
@@ -82,11 +142,23 @@ public class ATCommandGenerator {
 		return createProtobufATCommand(atCommand);
 	}
 
-	public static byte[] generateProtobufATCommand(String commandName, String commandType, String commandAction) {
-		ATCommand atCommand = ProtobufATCommandAdapter.encodeMap.get(commandName).get(commandType).get(commandAction);
+	public static byte[] generateProtobufATCommand(CommandType commandType, String messageType, Action action) {
+		ATCommand atCommand = ProtobufATCommandAdapter.encodeMap.get(commandType).get(messageType).get(action);
 		return createProtobufATCommand(atCommand);
 	}
 
+	/**
+	 * 
+	 * Create ATCommand with random parameters. Sets optional parameter with
+	 * probability of 50 %. Description of specific ATCommand is passed as a
+	 * funciton parameter.
+	 * 
+	 * @param atCommand
+	 *            Description of ATCommand
+	 * 
+	 * @return ATCommand as byte array
+	 * 
+	 */
 	private static byte[] createATCommand(ATCommand atCommand) {
 		String command = "";
 
@@ -203,6 +275,18 @@ public class ATCommandGenerator {
 		return command.getBytes();
 	}
 
+	/**
+	 * 
+	 * Create ATCommand in protobuf format with random parameters. Sets optional
+	 * parameter with probability of 50 %. Description of specific ATCommand is
+	 * passed as a funciton parameter.
+	 * 
+	 * @param atCommand
+	 *            Description of ATCommand
+	 * 
+	 * @return ATCommand in protobuf format as byte array
+	 * 
+	 */
 	private static byte[] createProtobufATCommand(ATCommand atCommand) {
 		Command.Builder commandBuilder = Command.newBuilder();
 		Class<?> commandBuilderClass = commandBuilder.getClass();
@@ -332,7 +416,7 @@ public class ATCommandGenerator {
 
 	/**
 	 * 
-	 * Returns radnom ATCommand defined in XML file
+	 * Returns radnom description of ATCommand defined in XML file.
 	 * 
 	 * @return ATCommand
 	 * 

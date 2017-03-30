@@ -2,6 +2,7 @@ package com.rtrk.atcommand.generator;
 
 import java.util.Random;
 
+import com.rtrk.atcommand.adapter.ProtobufATCommandAdapter;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.MessageStatus;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.SMSCommand;
 
@@ -11,10 +12,14 @@ public class DeleteAllSMSGenerator implements Generator {
 	public byte[] generateATCommand() {
 		String command = "AT+QMGDA=";
 		if (Math.random() < 0.5) {
+			ProtobufATCommandAdapter.environmentVariables
+			.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat","PDU_MODE".getBytes());
 			MessageStatus[] ms = MessageStatus.values();
 			int randomIndex = new Random().nextInt(ms.length);
 			command += ms[randomIndex].getNumber();
 		} else {
+			ProtobufATCommandAdapter.environmentVariables
+			.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat","TEXT_MODE".getBytes());
 			double random = Math.random();
 			if (random < 0.2) {
 				command += "\"REC UNREAD\"";
@@ -35,10 +40,14 @@ public class DeleteAllSMSGenerator implements Generator {
 	public void generateProtobufATCommand(Object commandBuilder) {
 		SMSCommand.Builder smsBuilder = (SMSCommand.Builder) commandBuilder;
 		if (Math.random() < 0.5) {
+			ProtobufATCommandAdapter.environmentVariables
+			.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat","PDU_MODE".getBytes());
 			MessageStatus[] ms = MessageStatus.values();
 			int randomIndex = new Random().nextInt(ms.length);
 			smsBuilder.setMessageStatusPDU(ms[randomIndex]);
 		} else {
+			ProtobufATCommandAdapter.environmentVariables
+			.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat","TEXT_MODE".getBytes());
 			double random = Math.random();
 			if (random < 0.2) {
 				smsBuilder.setMessageStatusText("\"REC UNREAD\"");

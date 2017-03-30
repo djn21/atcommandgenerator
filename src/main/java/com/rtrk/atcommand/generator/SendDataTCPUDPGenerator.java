@@ -2,6 +2,7 @@ package com.rtrk.atcommand.generator;
 
 import java.util.Random;
 
+import com.rtrk.atcommand.adapter.ProtobufATCommandAdapter;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.TCPIPCommand;
 
 public class SendDataTCPUDPGenerator implements Generator {
@@ -11,8 +12,10 @@ public class SendDataTCPUDPGenerator implements Generator {
 		String command = "AT+QISEND=";
 		Random random = new Random();
 		if (Math.random() < 0.5) {
+			ProtobufATCommandAdapter.environmentVariables.put("tcpipCommand.ENABLE_MULTIPLE_TCPIP_SESSION.enableMultipleTCPIPSession","false".getBytes());
 			command += random.nextInt(1460);
 		} else {
+			ProtobufATCommandAdapter.environmentVariables.put("tcpipCommand.ENABLE_MULTIPLE_TCPIP_SESSION.enableMultipleTCPIPSession","true".getBytes());
 			command += random.nextInt(Integer.MAX_VALUE);
 			if (Math.random() < 0.5) {
 				command += "," + random.nextInt(1460);
@@ -26,8 +29,10 @@ public class SendDataTCPUDPGenerator implements Generator {
 		TCPIPCommand.Builder tcpipBuilder = (TCPIPCommand.Builder) commandBuilder;
 		Random random = new Random();
 		if (Math.random() < 0.5) {
+			ProtobufATCommandAdapter.environmentVariables.put("tcpipCommand.ENABLE_MULTIPLE_TCPIP_SESSION.enableMultipleTCPIPSession","false".getBytes());
 			tcpipBuilder.setLength(random.nextInt(1460));
 		} else {
+			ProtobufATCommandAdapter.environmentVariables.put("tcpipCommand.ENABLE_MULTIPLE_TCPIP_SESSION.enableMultipleTCPIPSession","true".getBytes());
 			tcpipBuilder.setIndex(random.nextInt(Integer.MAX_VALUE));
 			if (Math.random() < 0.5) {
 				tcpipBuilder.setLength(random.nextInt(1460));
