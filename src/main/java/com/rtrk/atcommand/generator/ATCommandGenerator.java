@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.Vector;
@@ -27,12 +26,6 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.CommandType;
 
 public class ATCommandGenerator {
-
-	public static Map<CommandType, Map<Object, Double>> cmdPercentage = new HashMap<CommandType, Map<Object, Double>>();
-
-	public static int number;
-	public static boolean shuffle;
-	public static boolean protobuf;
 
 	/**
 	 * 
@@ -64,7 +57,7 @@ public class ATCommandGenerator {
 			JSONObject json = new JSONObject(jsonString);
 			int number = json.getInt("number");
 			boolean shuffle = json.getBoolean("shuffle");
-			boolean protobuf = json.getBoolean("protobuf");
+			String format = json.getString("format");
 
 			JSONArray commands = json.getJSONArray("commands");
 			for (int i = 0; i < commands.length(); i++) {
@@ -98,11 +91,11 @@ public class ATCommandGenerator {
 
 					// generate at commands
 					for (int k = 0; k < number * (percentage / 100); k++) {
-						if (protobuf) {
+						if (format.equals("protobuf")) {
 							byte[] generated = ATCommandGenerator.generateProtobufATCommand(commandTypeEnum,
 									messageTypeEnumObject);
 							cmds.add(generated);
-						} else {
+						} else if(format.equals("original")){
 							byte[] generated = ATCommandGenerator.generateATCommand(commandTypeEnum,
 									messageTypeEnumObject);
 							cmds.add(generated);
@@ -117,16 +110,12 @@ public class ATCommandGenerator {
 				Collections.shuffle(cmds);
 			}
 
-			int i = 1;
 			// write commands to file
 			for (byte[] cmdByte : cmds) {
-				if (protobuf) {
-					byte[] b = ProtobufATCommandAdapter.encode(cmdByte);
-					System.out.println(i++ + ". " + new String(b));
+				if (format.equals("protobuf")) {
 					Command cmd = Command.parseFrom(cmdByte);
 					cmd.writeDelimitedTo(fos);
-				} else {
-					System.out.println(i++ + ". " + new String(cmdByte));
+				} else if(format.equals("original")){
 					fos.write(cmdByte);
 					fos.write("\n".getBytes());
 				}
