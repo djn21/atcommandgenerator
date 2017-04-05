@@ -1,0 +1,156 @@
+{
+	"number": 100,
+	"shuffle": true,
+	"protobuf": true,
+	"commands":[
+		{
+			"name":"HTTP_COMMAND",
+			"types":[
+				{ "name":"SET_HTTP_SERVER_URL", "percentage":5 },
+				{ "name":"SEND_HTTP_GET_REQUEST", "percentage":5 },
+				{ "name":"READ_HTTP_SERVER_RESPONSE", "percentage":5 },
+				{ "name":"SEND_HTTP_POST_REQUEST", "percentage":5 },
+				{ "name":"DOWNLOAD_FILE_FROM_HTTP_SERVER", "percentage":5 }
+			]	
+		},
+		{
+			"name":"FILE_COMMAND",
+			"types":[
+				{ "name":"GET_STORAGE_DATE_SIZE", "percentage":5 },
+				{ "name":"LIST_FILES", "percentage":5 },
+				{ "name":"UPLOAD_FILE_TO_STORAGE", "percentage":5 },
+				{ "name":"DOWNLOAD_FILE_FROM_STORAGE", "percentage":5 },
+				{ "name":"DELETE_FILE_IN_STORAGE", "percentage":5 },
+				{ "name":"MOVE_FILE", "percentage":5 },
+				{ "name":"OPEN_FILE", "percentage":5 },
+				{ "name":"READ_FILE", "percentage":5 },
+				{ "name":"WRITE_FILE", "percentage":5 },
+				{ "name":"SEEK_FILE", "percentage":5 },
+				{ "name":"CLOSE_FILE", "percentage":5 },
+				{ "name":"GET_FILE_POINTER_OFFSET", "percentage":5 },
+				{ "name":"FORCE_TO_WRITE_DATA_IN_BUFFER", "percentage":5 },
+				{ "name":"TRUNCATE_FILE_FROM_FILE_POINTER", "percentage":10 }
+			]		
+		},
+		{
+			"name":"FTP_COMMAND",
+			"types":[
+
+			]		
+		},
+		{
+			"name":"MMS_COMMAND",
+			"types":[
+
+			]		
+		},
+		{
+			"name":"QUEC_CELL_COMMAND",
+			"types":[
+
+			]		
+		},
+		{
+			"name":"RECORDING_COMMAND",
+			"types":[
+
+			]		
+		},
+		{
+			"name":"SMTP_COMMAND",
+			"types":[
+
+			]		
+		},
+		{
+			"name":"STK_COMMAND",
+			"types":[
+
+			]		
+		},
+		{
+			"name":"GENERAL_COMMAND",
+			"types":[
+
+			]		
+		},
+		{
+			"name":"SERIAL_INTERFACE_CONTROL_COMMAND",
+			"types":[
+
+			]		
+		},
+		{
+			"name":"STATUS_CONTROL_COMMAND",
+			"types":[
+
+			]		
+		},
+		{
+			"name":"SIM_RELATED_COMMAND",
+			"types":[
+
+			]		
+		},
+		{
+			"name":"NETWORK_SERVICE_COMMAND",
+			"types":[
+
+			]		
+		},
+		{
+			"name":"CALL_RELATED_COMMAND",
+			"types":[
+
+			]		
+		},
+		{
+			"name":"SMS_COMMAND",
+			"types":[
+
+			]		
+		},
+		{
+			"name":"PHONEBOOK_COMMAND",
+			"types":[
+
+			]		
+		},
+		{
+			"name":"GPRS_COMMAND",
+			"types":[
+
+			]		
+		},
+		{
+			"name":"TCPIP_COMMAND",
+			"types":[
+
+			]		
+		},
+		{
+			"name":"SUPPLEMENTARY_SERVICE_COMMAND",
+			"types":[
+
+			]		
+		},
+		{
+			"name":"AUDIO_COMMAND",
+			"types":[
+
+			]		
+		},
+		{
+			"name":"HARDWARE_RELATED_COMMAND",
+			"types":[
+
+			]		
+		},
+		{
+			"name":"OTHERS_COMMAND",
+			"types":[
+
+			]		
+		}
+	]
+}
