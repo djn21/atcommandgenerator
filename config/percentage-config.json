@@ -1,7 +1,6 @@
 {
-	"number": 100,
-	"shuffle": false,
-	"format": "original",
+	"number": 10000,
+	"shuffle": true,
 	"commands":[
 		{
 			"name":"HTTP_COMMAND",
