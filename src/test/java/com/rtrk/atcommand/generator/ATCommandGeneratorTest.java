@@ -4,7 +4,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.rtrk.atcommand.adapter.ProtobufATCommandAdapter;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Action;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.CommandType;
@@ -96,7 +95,6 @@ public class ATCommandGeneratorTest extends TestCase {
 				Action.WRITE);
 		try {
 			protocommand = Command.parseFrom(generated);
-			System.out.println(new String(ProtobufATCommandAdapter.encode(generated)));
 			assertEquals(CommandType.MMS_COMMAND, protocommand.getCommandType());
 			assertTrue(protocommand.hasMmsCommand());
 

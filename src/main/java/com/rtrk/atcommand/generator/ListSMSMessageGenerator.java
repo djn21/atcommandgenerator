@@ -4,7 +4,7 @@ import java.util.Random;
 
 import com.rtrk.atcommand.adapter.ProtobufATCommandAdapter;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.MessageMode;
-import com.rtrk.atcommand.protobuf.ProtobufATCommand.MessageStatus;
+import com.rtrk.atcommand.protobuf.ProtobufATCommand.MessageStatusList;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.SMSCommand;
 
 public class ListSMSMessageGenerator implements Generator {
@@ -15,7 +15,7 @@ public class ListSMSMessageGenerator implements Generator {
 		if (Math.random() > 0.5) {
 			ProtobufATCommandAdapter.environmentVariables
 			.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat","PDU_MODE".getBytes());
-			MessageStatus[] ms = MessageStatus.values();
+			MessageStatusList[] ms = MessageStatusList.values();
 			int randomIndex = new Random().nextInt(ms.length);
 			command += ms[randomIndex].getNumber();
 		} else {
@@ -48,9 +48,9 @@ public class ListSMSMessageGenerator implements Generator {
 		if (Math.random() > 0.5) {
 			ProtobufATCommandAdapter.environmentVariables
 			.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat","PDU_MODE".getBytes());
-			MessageStatus[] ms = MessageStatus.values();
+			MessageStatusList[] ms = MessageStatusList.values();
 			int randomIndex = new Random().nextInt(ms.length);
-			smsBuilder.setMessageStatusPDU(ms[randomIndex]);
+			smsBuilder.setMessageStatusListPDU(ms[randomIndex]);
 		} else {
 			ProtobufATCommandAdapter.environmentVariables
 			.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat","TEXT_MODE".getBytes());
