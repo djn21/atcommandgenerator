@@ -8,6 +8,14 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.MMSCommand;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.OperateFunction;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.OperateWriteMMS;
 
+/**
+ * 
+ * Class for generating WRITE_MMS_MESSAGE command in original and protobuf
+ * format
+ * 
+ * @author djekanovic
+ *
+ */
 public class WriteMMSMessageGenerator implements Generator {
 
 	@Override

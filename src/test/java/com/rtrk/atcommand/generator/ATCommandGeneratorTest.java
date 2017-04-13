@@ -9,6 +9,7 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.CommandType;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.FileCommand;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.FileMessageType;
+import com.rtrk.atcommand.protobuf.ProtobufATCommand.HTTPMessageType;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.MMSCommand;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.MMSMessageType;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.ProtocolType;
@@ -52,6 +53,78 @@ public class ATCommandGeneratorTest extends TestCase {
 		return new TestSuite(ATCommandGeneratorTest.class);
 	}
 
+	
+	/**
+	 * 
+	 * Testing generateATCommand() function
+	 * 
+	 */
+	public void testGenerateATCommand() {
+		byte[] command = ATCommandGenerator.generateATCommand();
+		assertNotNull(command);
+
+		command = ATCommandGenerator.generateATCommand(CommandType.HTTP_COMMAND);
+		assertNotNull(command);
+		String commandString = new String(command);
+		assertTrue(commandString.startsWith("AT+QHTTP"));
+
+		command = ATCommandGenerator.generateATCommand(CommandType.HTTP_COMMAND, HTTPMessageType.SET_HTTP_SERVER_URL);
+		assertNotNull(command);
+		commandString = new String(command);
+		assertTrue(commandString.startsWith("AT+QHTTPURL"));
+
+		command = ATCommandGenerator.generateATCommand(CommandType.HTTP_COMMAND, HTTPMessageType.SET_HTTP_SERVER_URL,
+				Action.WRITE);
+		assertNotNull(command);
+		commandString = new String(command);
+		assertTrue(commandString.startsWith("AT+QHTTPURL="));
+		
+	}
+
+	/**
+	 * 
+	 * Testing generateProtobufATCommand() function
+	 * 
+	 */
+	public void testGenerateProtobufATCommand() {
+		try {
+			byte[] command = ATCommandGenerator.generateProtobufATCommand();
+			assertNotNull(command);
+			Command cmd = Command.parseFrom(command);
+			assertNotNull(cmd);
+			
+			command=ATCommandGenerator.generateProtobufATCommand(CommandType.HTTP_COMMAND);
+			assertNotNull(command);
+			cmd=Command.parseFrom(command);
+			assertNotNull(cmd);
+			assertEquals(CommandType.HTTP_COMMAND, cmd.getCommandType());
+			
+			command=ATCommandGenerator.generateProtobufATCommand(CommandType.HTTP_COMMAND, HTTPMessageType.SEND_HTTP_GET_REQUEST);
+			assertNotNull(command);
+			cmd=Command.parseFrom(command);
+			assertNotNull(cmd);
+			assertEquals(CommandType.HTTP_COMMAND, cmd.getCommandType());
+			assertEquals(HTTPMessageType.SEND_HTTP_GET_REQUEST, cmd.getHttpCommand().getMessageType());
+			
+			command=ATCommandGenerator.generateProtobufATCommand(CommandType.HTTP_COMMAND, HTTPMessageType.SEND_HTTP_GET_REQUEST, Action.WRITE);
+			assertNotNull(command);
+			cmd=Command.parseFrom(command);
+			assertNotNull(cmd);
+			assertEquals(CommandType.HTTP_COMMAND, cmd.getCommandType());
+			assertEquals(HTTPMessageType.SEND_HTTP_GET_REQUEST, cmd.getHttpCommand().getMessageType());
+			assertEquals(Action.WRITE, cmd.getHttpCommand().getAction());
+		} catch (InvalidProtocolBufferException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	
+	/**
+	 * 
+	 * Testing createATCommand() funciton
+	 * 
+	 */
 	public void testCreateATCommand() {
 		// 1. branch
 		generated = ATCommandGenerator.generateATCommand(CommandType.MMS_COMMAND, MMSMessageType.SET_MMS_PROXY,
@@ -89,6 +162,12 @@ public class ATCommandGeneratorTest extends TestCase {
 
 	}
 
+	
+	/**
+	 * 
+	 * Testing createProtobufATCommand() function
+	 * 
+	 */
 	public void testCreateProtobufATCommand() {
 		// 1. branch
 		generated = ATCommandGenerator.generateProtobufATCommand(CommandType.MMS_COMMAND, MMSMessageType.SET_MMS_PROXY,

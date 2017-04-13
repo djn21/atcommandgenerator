@@ -6,6 +6,14 @@ import org.apache.commons.lang.RandomStringUtils;
 
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.FTPCommand;
 
+/**
+ * 
+ * Class for generating LIST_CONTENTS_OF_DIRECTORY_OR_FILE in original and
+ * protobuf format
+ * 
+ * @author djekanovic
+ *
+ */
 public class ListContentsFTPGenerator implements Generator {
 
 	@Override

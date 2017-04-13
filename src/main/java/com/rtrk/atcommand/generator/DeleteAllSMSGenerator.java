@@ -6,20 +6,27 @@ import com.rtrk.atcommand.adapter.ProtobufATCommandAdapter;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.MessageStatusDelete;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.SMSCommand;
 
+/**
+ * 
+ * Class for generating DELETE_ALL_SMS command in original and protobuf format
+ * 
+ * @author djekanovic
+ *
+ */
 public class DeleteAllSMSGenerator implements Generator {
 
 	@Override
 	public byte[] generateATCommand() {
 		String command = "AT+QMGDA=";
 		if (Math.random() < 0.5) {
-			ProtobufATCommandAdapter.environmentVariables
-			.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat","PDU_MODE".getBytes());
+			ProtobufATCommandAdapter.environmentVariables.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat",
+					"PDU_MODE".getBytes());
 			MessageStatusDelete[] ms = MessageStatusDelete.values();
 			int randomIndex = new Random().nextInt(ms.length);
 			command += ms[randomIndex].getNumber();
 		} else {
-			ProtobufATCommandAdapter.environmentVariables
-			.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat","TEXT_MODE".getBytes());
+			ProtobufATCommandAdapter.environmentVariables.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat",
+					"TEXT_MODE".getBytes());
 			double random = Math.random();
 			if (random < 0.2) {
 				command += "\"REC UNREAD\"";
@@ -40,14 +47,14 @@ public class DeleteAllSMSGenerator implements Generator {
 	public void generateProtobufATCommand(Object commandBuilder) {
 		SMSCommand.Builder smsBuilder = (SMSCommand.Builder) commandBuilder;
 		if (Math.random() < 0.5) {
-			ProtobufATCommandAdapter.environmentVariables
-			.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat","PDU_MODE".getBytes());
+			ProtobufATCommandAdapter.environmentVariables.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat",
+					"PDU_MODE".getBytes());
 			MessageStatusDelete[] ms = MessageStatusDelete.values();
 			int randomIndex = new Random().nextInt(ms.length);
 			smsBuilder.setMessageStatusDeletePDU(ms[randomIndex]);
 		} else {
-			ProtobufATCommandAdapter.environmentVariables
-			.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat","TEXT_MODE".getBytes());
+			ProtobufATCommandAdapter.environmentVariables.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat",
+					"TEXT_MODE".getBytes());
 			double random = Math.random();
 			if (random < 0.2) {
 				smsBuilder.setMessageStatusText("\"REC UNREAD\"");

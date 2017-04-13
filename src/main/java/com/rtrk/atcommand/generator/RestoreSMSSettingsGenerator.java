@@ -4,6 +4,14 @@ import java.util.Random;
 
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.SMSCommand;
 
+/**
+ * 
+ * Class for generating RESTORE_SMS_SETTINGS command in original and protobuf
+ * format
+ * 
+ * @author djekanovic
+ *
+ */
 public class RestoreSMSSettingsGenerator implements Generator {
 
 	@Override

@@ -5,6 +5,14 @@ import java.util.Random;
 import com.mifmif.common.regex.Generex;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.TCPIPCommand;
 
+/**
+ * 
+ * Class for generating SET_UP_TCP_OR_UDP_CONNECTION command in original and
+ * protobuf format
+ * 
+ * @author djekanovic
+ *
+ */
 public class StartConnectionGenerator implements Generator {
 
 	@Override

@@ -3,6 +3,14 @@ package com.rtrk.atcommand.generator;
 import com.mifmif.common.regex.Generex;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.CallRelatedCommand;
 
+/**
+ * 
+ * Class for generating MOBILE_ORIGINATED_CALL_TO_DIAL_A_NUMBER command in
+ * original and protobuf format
+ * 
+ * @author djekanovic
+ *
+ */
 public class MobileOriginatedCallGenerator implements Generator {
 
 	@Override

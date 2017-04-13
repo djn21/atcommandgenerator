@@ -6,6 +6,13 @@ import org.apache.commons.lang.RandomStringUtils;
 
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.FTPCommand;
 
+/**
+ * 
+ * Class for generating LIST_FILE_NAMES command in original and protobuf format
+ * 
+ * @author djekanovic
+ *
+ */
 public class ListFileNamesFTPGenerator implements Generator {
 
 	@Override

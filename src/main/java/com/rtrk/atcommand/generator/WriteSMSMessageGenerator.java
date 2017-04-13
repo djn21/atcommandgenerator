@@ -8,6 +8,14 @@ import com.rtrk.atcommand.adapter.ProtobufATCommandAdapter;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.MessageStatusList;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.SMSCommand;
 
+/**
+ * 
+ * Class for generating WRITE_SMS_MESSAGE_TO_MEMORY command in original and
+ * protobuf format
+ * 
+ * @author djekanovic
+ *
+ */
 public class WriteSMSMessageGenerator implements Generator {
 
 	@Override

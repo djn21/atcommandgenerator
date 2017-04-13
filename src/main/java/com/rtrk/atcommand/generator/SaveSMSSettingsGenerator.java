@@ -4,7 +4,15 @@ import java.util.Random;
 
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.SMSCommand;
 
-public class SaveSMSSettingsGenerator implements Generator{
+/**
+ * 
+ * Class for generating SAVE_SMS_SETTINGS command in original and protobuf
+ * format
+ * 
+ * @author djekanovic
+ *
+ */
+public class SaveSMSSettingsGenerator implements Generator {
 
 	@Override
 	public byte[] generateATCommand() {
@@ -22,5 +30,5 @@ public class SaveSMSSettingsGenerator implements Generator{
 			smsBuilder.setProfile(new Random().nextInt(4));
 		}
 	}
-	
+
 }

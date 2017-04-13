@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.Vector;
 
 import org.apache.commons.lang.RandomStringUtils;
@@ -300,10 +301,11 @@ public class ATCommandGenerator {
 		String commandTypeLowerCamel = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, commandType.toString());
 		Map<String, ATCommand> actionMap = ProtobufATCommandAdapter.encodeMap.get(commandTypeLowerCamel)
 				.get(messageType.toString());
-
+		Set<String> actionSet=actionMap.keySet();
+		
 		// get random ATCommand
 		int commandIndex = new Random().nextInt(actionMap.size());
-		ATCommand atCommand = new ArrayList<ATCommand>(actionMap.values()).get(commandIndex);
+		ATCommand atCommand = actionMap.get(actionSet.toArray()[commandIndex].toString());
 
 		return createATCommand(atCommand);
 	}
@@ -442,10 +444,11 @@ public class ATCommandGenerator {
 		String commandTypeLowerCamel = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, commandType.toString());
 		Map<String, ATCommand> actionMap = ProtobufATCommandAdapter.encodeMap.get(commandTypeLowerCamel)
 				.get(messageType.toString());
-
+		Set<String> actionSet=actionMap.keySet();
+		
 		// get random ATCommand
 		int commandIndex = new Random().nextInt(actionMap.size());
-		ATCommand atCommand = new ArrayList<ATCommand>(actionMap.values()).get(commandIndex);
+		ATCommand atCommand = actionMap.get(actionSet.toArray()[commandIndex].toString());
 
 		return createProtobufATCommand(atCommand);
 	}
