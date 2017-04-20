@@ -13,7 +13,7 @@ public interface Generator {
 
 	/**
 	 * 
-	 * Generating AT Command in text format.
+	 * Generating AT Command in original format.
 	 * 
 	 * @return AT Command as byte array
 	 * 

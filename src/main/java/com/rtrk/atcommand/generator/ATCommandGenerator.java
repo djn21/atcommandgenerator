@@ -27,7 +27,7 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.CommandType;
 /**
  * 
  * Utility class for generating AT Command. The class contains static methods
- * for generating AT Commands in text and protobuf format.
+ * for generating AT Commands in original and protobuf format.
  * 
  * @author djekanovic
  *
@@ -323,7 +323,7 @@ public class ATCommandGenerator {
 	 * @param action
 	 *            TEST, READ, WRITE or EXECUTION ATCommand
 	 * 
-	 * @return ATCommand as byte array
+	 * @return ATCommand as byte array or null if action not exists
 	 * 
 	 */
 	public static byte[] generateATCommand(CommandType commandType, Object messageType, Action action) {

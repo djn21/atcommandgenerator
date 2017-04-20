@@ -29,15 +29,15 @@ public class DeleteAllSMSGenerator implements Generator {
 					"TEXT_MODE".getBytes());
 			double random = Math.random();
 			if (random < 0.2) {
-				command += "\"REC UNREAD\"";
+				command += "\"DEL UNREAD\"";
 			} else if (random < 0.4) {
-				command += "\"REC READ\"";
+				command += "\"DEL READ\"";
 			} else if (random < 0.6) {
-				command += "\"STO UNSENT\"";
+				command += "\"DEL UNSENT\"";
 			} else if (random < 0.8) {
-				command += "\"STO SENT\"";
+				command += "\"DEL SENT\"";
 			} else {
-				command += "\"ALL\"";
+				command += "\"DEL ALL\"";
 			}
 		}
 		return command.getBytes();

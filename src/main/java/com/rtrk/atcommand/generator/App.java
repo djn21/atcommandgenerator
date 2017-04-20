@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 
 /**
- * Hello world!
+ *
+ * Generate files with original and protobuf ATCommandss
+ *
+ * @author djekanovic
  *
  */
 public class App {

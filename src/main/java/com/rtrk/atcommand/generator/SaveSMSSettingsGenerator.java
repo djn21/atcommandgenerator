@@ -16,7 +16,7 @@ public class SaveSMSSettingsGenerator implements Generator {
 
 	@Override
 	public byte[] generateATCommand() {
-		String command = "AT+CRES";
+		String command = "AT+CSAS";
 		if (Math.random() < 0.5) {
 			command += "=" + new Random().nextInt(4);
 		}

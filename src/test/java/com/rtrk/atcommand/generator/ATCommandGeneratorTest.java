@@ -20,7 +20,7 @@ import junit.framework.TestSuite;
 
 /**
  * 
- * Unit test for ProtobufATCommandAdapter
+ * Unit test for ATCommandGenerator
  * 
  * @author djekanovic
  *
@@ -29,8 +29,8 @@ import junit.framework.TestSuite;
 public class ATCommandGeneratorTest extends TestCase {
 
 	private byte[] generated;
-	String textcommand;
-	Command protocommand;
+	private String textcommand;
+	private Command protocommand;
 
 	/**
 	 * 
@@ -53,7 +53,6 @@ public class ATCommandGeneratorTest extends TestCase {
 		return new TestSuite(ATCommandGeneratorTest.class);
 	}
 
-	
 	/**
 	 * 
 	 * Testing generateATCommand() function
@@ -78,7 +77,7 @@ public class ATCommandGeneratorTest extends TestCase {
 		assertNotNull(command);
 		commandString = new String(command);
 		assertTrue(commandString.startsWith("AT+QHTTPURL="));
-		
+
 	}
 
 	/**
@@ -92,23 +91,25 @@ public class ATCommandGeneratorTest extends TestCase {
 			assertNotNull(command);
 			Command cmd = Command.parseFrom(command);
 			assertNotNull(cmd);
-			
-			command=ATCommandGenerator.generateProtobufATCommand(CommandType.HTTP_COMMAND);
+
+			command = ATCommandGenerator.generateProtobufATCommand(CommandType.HTTP_COMMAND);
 			assertNotNull(command);
-			cmd=Command.parseFrom(command);
+			cmd = Command.parseFrom(command);
 			assertNotNull(cmd);
 			assertEquals(CommandType.HTTP_COMMAND, cmd.getCommandType());
-			
-			command=ATCommandGenerator.generateProtobufATCommand(CommandType.HTTP_COMMAND, HTTPMessageType.SEND_HTTP_GET_REQUEST);
+
+			command = ATCommandGenerator.generateProtobufATCommand(CommandType.HTTP_COMMAND,
+					HTTPMessageType.SEND_HTTP_GET_REQUEST);
 			assertNotNull(command);
-			cmd=Command.parseFrom(command);
+			cmd = Command.parseFrom(command);
 			assertNotNull(cmd);
 			assertEquals(CommandType.HTTP_COMMAND, cmd.getCommandType());
 			assertEquals(HTTPMessageType.SEND_HTTP_GET_REQUEST, cmd.getHttpCommand().getMessageType());
-			
-			command=ATCommandGenerator.generateProtobufATCommand(CommandType.HTTP_COMMAND, HTTPMessageType.SEND_HTTP_GET_REQUEST, Action.WRITE);
+
+			command = ATCommandGenerator.generateProtobufATCommand(CommandType.HTTP_COMMAND,
+					HTTPMessageType.SEND_HTTP_GET_REQUEST, Action.WRITE);
 			assertNotNull(command);
-			cmd=Command.parseFrom(command);
+			cmd = Command.parseFrom(command);
 			assertNotNull(cmd);
 			assertEquals(CommandType.HTTP_COMMAND, cmd.getCommandType());
 			assertEquals(HTTPMessageType.SEND_HTTP_GET_REQUEST, cmd.getHttpCommand().getMessageType());
@@ -119,7 +120,6 @@ public class ATCommandGeneratorTest extends TestCase {
 
 	}
 
-	
 	/**
 	 * 
 	 * Testing createATCommand() funciton
@@ -162,7 +162,6 @@ public class ATCommandGeneratorTest extends TestCase {
 
 	}
 
-	
 	/**
 	 * 
 	 * Testing createProtobufATCommand() function
