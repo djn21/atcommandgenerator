@@ -19,7 +19,7 @@ public class SendDataTCPUDPGenerator implements Generator {
 	public byte[] generateATCommand() {
 		String command = "AT+QISEND=";
 		Random random = new Random();
-		if (Math.random() < 0.5) {
+		if (!ATCommandGenerator.enableMultipleTCPIPSession) {
 			ProtobufATCommandAdapter.environmentVariables
 					.put("tcpipCommand.ENABLE_MULTIPLE_TCPIP_SESSION.enableMultipleTCPIPSession", "false".getBytes());
 			command += random.nextInt(1460);
@@ -38,7 +38,7 @@ public class SendDataTCPUDPGenerator implements Generator {
 	public void generateProtobufATCommand(Object commandBuilder) {
 		TCPIPCommand.Builder tcpipBuilder = (TCPIPCommand.Builder) commandBuilder;
 		Random random = new Random();
-		if (Math.random() < 0.5) {
+		if (!ATCommandGenerator.enableMultipleTCPIPSession) {
 			ProtobufATCommandAdapter.environmentVariables
 					.put("tcpipCommand.ENABLE_MULTIPLE_TCPIP_SESSION.enableMultipleTCPIPSession", "false".getBytes());
 			tcpipBuilder.setLength(random.nextInt(1460));

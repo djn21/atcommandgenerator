@@ -3,6 +3,7 @@ package com.rtrk.atcommand.generator;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
+import com.rtrk.atcommand.generator.test.TestEncodeDecodeTime;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 
 /**
@@ -18,6 +19,9 @@ public class App {
 		try {
 			FileOutputStream originalCommandsFile = new FileOutputStream("output\\originalcommands");
 			FileOutputStream protobufCommandsFile = new FileOutputStream("output\\protobufcommands");
+
+			ATCommandGenerator.enableMultipleTCPIPSession = true;
+			ATCommandGenerator.smsMessageFormat = "PDU_MODE";
 
 			ArrayList<byte[]> originalCommands = ATCommandGenerator.generateATCommands();
 			ArrayList<byte[]> protobufCommands = ATCommandGenerator.generateProtobufATCommands();
@@ -36,6 +40,10 @@ public class App {
 
 			originalCommandsFile.close();
 			protobufCommandsFile.close();
+
+			TestEncodeDecodeTime.testDecodeThread("output/originalcommands");
+			System.out.println("DONE!");
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

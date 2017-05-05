@@ -20,7 +20,7 @@ public class ListSMSMessageGenerator implements Generator {
 	@Override
 	public byte[] generateATCommand() {
 		String command = "AT+CMGL=";
-		if (Math.random() > 0.5) {
+		if (ATCommandGenerator.smsMessageFormat.equals("PDU_MODE")) {
 			ProtobufATCommandAdapter.environmentVariables.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat",
 					"PDU_MODE".getBytes());
 			MessageStatusList[] ms = MessageStatusList.values();
@@ -53,7 +53,7 @@ public class ListSMSMessageGenerator implements Generator {
 	@Override
 	public void generateProtobufATCommand(Object commandBuilder) {
 		SMSCommand.Builder smsBuilder = (SMSCommand.Builder) commandBuilder;
-		if (Math.random() > 0.5) {
+		if (ATCommandGenerator.smsMessageFormat.equals("PDU_MODE")) {
 			ProtobufATCommandAdapter.environmentVariables.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat",
 					"PDU_MODE".getBytes());
 			MessageStatusList[] ms = MessageStatusList.values();

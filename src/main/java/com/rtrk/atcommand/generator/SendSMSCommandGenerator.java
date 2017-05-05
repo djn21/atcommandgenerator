@@ -20,7 +20,7 @@ public class SendSMSCommandGenerator implements Generator {
 	public byte[] generateATCommand() {
 		String command = "AT+CMGC=";
 		Random random = new Random();
-		if (Math.random() < 0.5) {
+		if (ATCommandGenerator.smsMessageFormat.equals("TEXT_MODE")) {
 			ProtobufATCommandAdapter.environmentVariables.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat",
 					"TEXT_MODE".getBytes());
 			command += random.nextInt(Integer.MAX_VALUE); // fo
@@ -43,7 +43,7 @@ public class SendSMSCommandGenerator implements Generator {
 	public void generateProtobufATCommand(Object commandBuilder) {
 		SMSCommand.Builder smsBuilder = (SMSCommand.Builder) commandBuilder;
 		Random random = new Random();
-		if (Math.random() < 0.5) {
+		if (ATCommandGenerator.smsMessageFormat.equals("TEXT_MODE")) {
 			ProtobufATCommandAdapter.environmentVariables.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat",
 					"TEXT_MODE".getBytes());
 			smsBuilder.setFirstOctet(random.nextInt(Integer.MAX_VALUE));

@@ -3,7 +3,6 @@ package com.rtrk.atcommand.generator;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
@@ -35,10 +34,13 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.CommandType;
 
 public class ATCommandGenerator {
 
+	public static String smsMessageFormat;
+	public static boolean enableMultipleTCPIPSession;
+
 	/**
 	 * 
-	 * Creates random AT Commands. Number, order and percentage of each command is defined in config file
-	 * percentage-config.cfg.
+	 * Creates random AT Commands. Number, order and percentage of each command
+	 * is defined in config file percentage-config.cfg.
 	 * 
 	 * @return List of AT Commands
 	 * 
@@ -117,8 +119,8 @@ public class ATCommandGenerator {
 
 	/**
 	 * 
-	 * Creates random protobuf AT Commands. Number, order and percenage of each command is defined in
-	 * config file percentage-config.cfg.
+	 * Creates random protobuf AT Commands. Number, order and percenage of each
+	 * command is defined in config file percentage-config.cfg.
 	 * 
 	 * @return List of AT Commands in protobuf format
 	 * 
@@ -301,8 +303,8 @@ public class ATCommandGenerator {
 		String commandTypeLowerCamel = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, commandType.toString());
 		Map<String, ATCommand> actionMap = ProtobufATCommandAdapter.encodeMap.get(commandTypeLowerCamel)
 				.get(messageType.toString());
-		Set<String> actionSet=actionMap.keySet();
-		
+		Set<String> actionSet = actionMap.keySet();
+
 		// get random ATCommand
 		int commandIndex = new Random().nextInt(actionMap.size());
 		ATCommand atCommand = actionMap.get(actionSet.toArray()[commandIndex].toString());
@@ -444,8 +446,8 @@ public class ATCommandGenerator {
 		String commandTypeLowerCamel = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, commandType.toString());
 		Map<String, ATCommand> actionMap = ProtobufATCommandAdapter.encodeMap.get(commandTypeLowerCamel)
 				.get(messageType.toString());
-		Set<String> actionSet=actionMap.keySet();
-		
+		Set<String> actionSet = actionMap.keySet();
+
 		// get random ATCommand
 		int commandIndex = new Random().nextInt(actionMap.size());
 		ATCommand atCommand = actionMap.get(actionSet.toArray()[commandIndex].toString());
@@ -597,14 +599,12 @@ public class ATCommandGenerator {
 					Random random = new Random();
 					Object[] values = (Object[]) parameterClass.getMethod("values").invoke(parameterClass);
 					int randomIndex = random.nextInt(values.length);
-					int value = (int) parameterClass.getMethod("getNumber").invoke(values[randomIndex]);
+					int value = Integer.parseInt(parameterClass.getMethod("getNumber").invoke(values[randomIndex]).toString());
 					command += value;
 				}
 
 			}
-		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | NoSuchFieldException | ClassNotFoundException
-				| InstantiationException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -743,8 +743,7 @@ public class ATCommandGenerator {
 			// set command type
 			commandBuilderClass.getMethod("set" + commandTypeUpperCamel, commandTypeClass).invoke(commandBuilder,
 					commandType);
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-				| SecurityException | NoSuchFieldException | ClassNotFoundException | InstantiationException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return commandBuilder.build().toByteArray();

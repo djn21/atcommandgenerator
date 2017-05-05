@@ -21,7 +21,7 @@ public class WriteSMSMessageGenerator implements Generator {
 	@Override
 	public byte[] generateATCommand() {
 		String command = "AT+CMGW";
-		if (Math.random() < 0.5) {
+		if (ATCommandGenerator.smsMessageFormat.equals("TEXT_MODE")) {
 			ProtobufATCommandAdapter.environmentVariables.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat",
 					"TEXT_MODE".getBytes());
 			if (Math.random() < 0.5) {
@@ -51,7 +51,7 @@ public class WriteSMSMessageGenerator implements Generator {
 	@Override
 	public void generateProtobufATCommand(Object commandBuilder) {
 		SMSCommand.Builder smsBuilder = (SMSCommand.Builder) commandBuilder;
-		if (Math.random() < 0.5) {
+		if (ATCommandGenerator.smsMessageFormat.equals("TEXT_MODE")) {
 			ProtobufATCommandAdapter.environmentVariables.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat",
 					"TEXT_MODE".getBytes());
 			if (Math.random() < 0.5) {

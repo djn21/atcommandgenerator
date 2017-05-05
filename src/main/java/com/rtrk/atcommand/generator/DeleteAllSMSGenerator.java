@@ -18,7 +18,7 @@ public class DeleteAllSMSGenerator implements Generator {
 	@Override
 	public byte[] generateATCommand() {
 		String command = "AT+QMGDA=";
-		if (Math.random() < 0.5) {
+		if (ATCommandGenerator.smsMessageFormat.equals("PDU_MODE")) {
 			ProtobufATCommandAdapter.environmentVariables.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat",
 					"PDU_MODE".getBytes());
 			MessageStatusDelete[] ms = MessageStatusDelete.values();
@@ -46,7 +46,7 @@ public class DeleteAllSMSGenerator implements Generator {
 	@Override
 	public void generateProtobufATCommand(Object commandBuilder) {
 		SMSCommand.Builder smsBuilder = (SMSCommand.Builder) commandBuilder;
-		if (Math.random() < 0.5) {
+		if (ATCommandGenerator.smsMessageFormat.equals("PDU_MODE")) {
 			ProtobufATCommandAdapter.environmentVariables.put("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat",
 					"PDU_MODE".getBytes());
 			MessageStatusDelete[] ms = MessageStatusDelete.values();
